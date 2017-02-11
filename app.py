@@ -50,9 +50,9 @@ def index():
 def userHome():
     return render_template('userHome.html')
 
-@app.route('/showAddTutor')
-def showAddWish():
-    return render_template('addTutor.html')
+@app.route('/requestTutors')
+def showRequestTutors():
+    return render_template('requestTutors.html')
 
 @app.route('/activateTutor')
 def activateTutor():
