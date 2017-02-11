@@ -29,11 +29,12 @@ class User(UserMixin, db.Model):
     social_id = db.Column(db.String(64), nullable=False, unique=True)
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
+    available = db.Column(db.Boolean, default=False)
+
 
 class Posts(UserMixin, db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    available = db.Column(db.Boolean, default=False)
     text = db.Column(db.String(64), nullable=False)
 
 @lm.user_loader
@@ -53,32 +54,14 @@ def userHome():
 def showAddWish():
     return render_template('addTutor.html')
 
-@app.route('/addTutor',methods=['POST'])
-def addTutor():
-    try:
-        if session.get('user'):
-            _title = request.form['inputTitle']
-            _description = request.form['inputDescription']
-            _user = session.get('user')
- 
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.callproc('sp_addTutor',(_title,_description,_user))
-            data = cursor.fetchall()
- 
-            if len(data) is 0:
-                conn.commit()
-                return redirect('/userHome')
-            else:
-                return render_template('error.html',error = 'An error occurred!')
- 
-        else:
-            return render_template('error.html',error = 'Unauthorized Access')
-    except Exception as e:
-        return render_template('error.html',error = str(e))
-    finally:
-        cursor.close()
-        conn.close()
+@app.route('/activateTutor')
+def activateTutor():
+    return render_template('/')
+
+@app.route('/deactivateTutor')
+def deactivateTutor():
+    return render_template('/')
+
 
 @app.route('/signin.html')
 def signIn():
@@ -145,7 +128,7 @@ def oauth_callback(provider):
         user = User(social_id=social_id, nickname=username, email=email)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('firstTime'))
+        #return redirect(url_for('firstTime'))
     login_user(user, True)
     return redirect(url_for('userHome'))
 
