@@ -1,0 +1,1 @@
+git+git://github.com/pythonforfacebook/facebook-sdk.git@e65d06158e48388b3932563f1483ca77065951b3#egg=facebook-sdk-1.0.0-alpha
