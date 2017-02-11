@@ -56,11 +56,17 @@ def showRequestTutors():
 
 @app.route('/activateTutor')
 def activateTutor():
-    return render_template('/')
+    user = load_user(current_user.get_id())
+    user.available = True
+    db.session.commit()
+    return redirect(url_for('userHome'))
 
 @app.route('/deactivateTutor')
 def deactivateTutor():
-    return render_template('/')
+    user = load_user(current_user.get_id())
+    user.available = False
+    db.session.commit()
+    return redirect(url_for('userHome'))
 
 
 @app.route('/signin.html')
