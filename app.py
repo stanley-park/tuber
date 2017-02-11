@@ -100,7 +100,7 @@ def my_form_post():
 
     available = True
     text = request.form['text']
-    post = Posts(text=text, available=available)
+    post = Posts(text=text)
     db.session.add(post)
     db.session.commit()
     return redirect(url_for('displayposts'))
