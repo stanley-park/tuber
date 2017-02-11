@@ -33,6 +33,7 @@ class User(UserMixin, db.Model):
 class Posts(UserMixin, db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
+    available = db.Column(db.Boolean, default=False)
     text = db.Column(db.String(64), nullable=False)
 
 @lm.user_loader
@@ -77,8 +78,9 @@ def displayposts():
 @app.route('/', methods=['POST'])
 def my_form_post():
 
+    available = True
     text = request.form['text']
-    post = Posts(text=text)
+    post = Posts(text=text, available=available)
     db.session.add(post)
     db.session.commit()
     return redirect(url_for('displayposts'))
