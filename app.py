@@ -1,21 +1,52 @@
-from flask import Flask, render_template, json, request
-from flask.ext.mysql import MySQL
-from werkzeug import generate_password_hash, check_password_hash
+#!flask/bin/python
 
-mysql = MySQL()
+
+from flask import Flask, redirect, url_for, render_template, flash
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, logout_user,\
+    current_user
+from oauth import OAuthSignIn
+
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '24242424'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config['OAUTH_CREDENTIALS'] = {
+    'facebook': {
+        'id': '408792279458709',
+        'secret': '046aa45aec64338848b150b4713f2b04'
+    }
+}
 
-# MySQL configurations
-app.config['MYSQL_DATABASE_USER'] = 'jay'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'jay'
-app.config['MYSQL_DATABASE_DB'] = 'BucketList'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-mysql.init_app(app)
+db = SQLAlchemy(app)
+lm = LoginManager(app)
+lm.login_view = 'index'
+
+
+class User(UserMixin, db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    social_id = db.Column(db.String(64), nullable=False, unique=True)
+    nickname = db.Column(db.String(64), nullable=False)
+    email = db.Column(db.String(64), nullable=True)
+
+
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 @app.route('/')
-def main():
+def index():
     return render_template('index.html')
+
+@app.route('/userHome')
+def userHome():
+    return render_template('userHome.html')
+
+@app.route('/signin.html')
+def signIn():
+    return render_template('signin.html')
 
 @app.route('/showSignUp')
 def showSignUp():
@@ -25,75 +56,39 @@ def showSignUp():
 def showSignin():
     return render_template('signin.html')
 
-@app.route('/validateLogin',methods=['POST'])
-def validateLogin():
-    try:
-        _username = request.form['inputEmail']
-        _password = request.form['inputPassword']
- 
- 
- 
-        # connect to mysql
- 
-        con = mysql.connect()
-        cursor = con.cursor()
-        cursor.callproc('sp_validateLogin',(_username,))
-        data = cursor.fetchall()
- 
- 
- 
- 
-        if len(data) > 0:
-            if check_password_hash(str(data[0][3]),_password):
-                session['user'] = data[0][0]
-                return redirect('/userHome')
-            else:
-                return render_template('error.html',error = 'Wrong Email address or Password.')
-        else:
-            return render_template('error.html',error = 'Wrong Email address or Password.')
- 
- 
-    except Exception as e:
-        return render_template('error.html',error = str(e))
-    finally:
-        cursor.close()
-        con.close()
 
-@app.route('/signUp',methods=['POST','GET'])
-def signUp():
-    try:
-        _name = request.form['inputName']
-        _email = request.form['inputEmail']
-        _password = request.form['inputPassword']
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
-        # validate the received values
-        if _name and _email and _password:
-            
-            # All Good, let's call MySQL
-            
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            _hashed_password = generate_password_hash(_password)
-            cursor.callproc('sp_createUser',(_name,_email,_hashed_password))
-            data = cursor.fetchall()
 
-            if len(data) is 0:
-                conn.commit()
-                return json.dumps({'message':'User created successfully !'})
-            else:
-                return json.dumps({'error':str(data[0])})
-        else:
-            return json.dumps({'html':'<span>Enter the required fields</span>'})
+@app.route('/authorize/<provider>')
+def oauth_authorize(provider):
+    if not current_user.is_anonymous:
+        return redirect(url_for('userHome'))
+    oauth = OAuthSignIn.get_provider(provider)
+    return oauth.authorize()
 
-    except Exception as e:
-        return json.dumps({'error':str(e)})
-    finally:
-        cursor.close() 
-        conn.close()
-        
-@app.route('/userHome')
-def userHome():
-    return render_template('userHome.html')
 
-if __name__ == "__main__":
-    app.run(port=5002)
+@app.route('/callback/<provider>')
+def oauth_callback(provider):
+    if not current_user.is_anonymous:
+        return redirect(url_for('userHome'))
+    oauth = OAuthSignIn.get_provider(provider)
+    social_id, username, email = oauth.callback()
+    if social_id is None:
+        flash('Authentication failed.')
+        return redirect(url_for('index'))
+    user = User.query.filter_by(social_id=social_id).first()
+    if not user:
+        user = User(social_id=social_id, nickname=username, email=email)
+        db.session.add(user)
+        db.session.commit()
+    login_user(user, True)
+    return redirect(url_for('userHome'))
+
+
+if __name__ == '__main__':
+    db.create_all()
+    app.run(debug=True)
