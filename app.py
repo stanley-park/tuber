@@ -1,7 +1,7 @@
 #!flask/bin/python
 
 
-from flask import Flask, redirect, url_for, render_template, flash
+from flask import Flask, redirect, url_for, render_template, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
@@ -30,6 +30,10 @@ class User(UserMixin, db.Model):
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
 
+class Posts(UserMixin, db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(64), nullable=False)
 
 @lm.user_loader
 def load_user(id):
@@ -48,13 +52,36 @@ def userHome():
 def signIn():
     return render_template('signin.html')
 
-@app.route('/showSignUp')
-def showSignUp():
-    return render_template('signup.html')
+@app.route('/makePost')
+def makePost():
+    return render_template('makePost.html')
+
 
 @app.route('/showSignIn')
 def showSignin():
     return render_template('signin.html')
+
+@app.route('/firstTime')
+def showFirstTime():
+    return render_template('firsttime.html')
+
+@app.route('/displayposts')
+def displayposts():
+    posts = Posts.query.all()
+
+    for post in posts:
+        text = post.text
+
+    return render_template('displayposts.html', posts=posts)
+
+@app.route('/', methods=['POST'])
+def my_form_post():
+
+    text = request.form['text']
+    post = Posts(text=text)
+    db.session.add(post)
+    db.session.commit()
+    return redirect(url_for('displayposts'))
 
 
 @app.route('/logout')
@@ -85,6 +112,7 @@ def oauth_callback(provider):
         user = User(social_id=social_id, nickname=username, email=email)
         db.session.add(user)
         db.session.commit()
+        return redirect(url_for('firstTime'))
     login_user(user, True)
     return redirect(url_for('userHome'))
 
