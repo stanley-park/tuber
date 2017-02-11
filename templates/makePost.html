@@ -36,8 +36,11 @@
         
         <input type="submit" name="my-form" value="Let's Go!">
         <p>
-        <a href="/deactivateTutor">Turn availability Off</a>&nbsp;&nbsp;&nbsp;
-        <a href="/activateTutor">Turn availability On</a>
+        {% if current_user.available %}
+          <a href="/deactivateTutor">Turn availability Off</a>
+        {% else %}
+          <a href="/activateTutor">Turn availability On</a>
+        {% endif %}
       </form>
       </div>
 
