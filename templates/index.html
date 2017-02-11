@@ -19,8 +19,13 @@
         <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="/showSignIn">Sign In</a></li>
- 	    <li role="presentation"><a href="/showSignUp">Sign Up</a></li>
+            {% if not current_user.is_authenticated %}
+              <li role="presentation"><a href="/showSignIn">Sign In</a></li>
+              <li role="presentation"><a href="/showSignUp">Sign Up</a></li>
+            {% else %}
+              <li role="presentation"><a href="/userHome">My Account</a></li>
+              <li role="presentation"><a href="/logout">Log out</a></li>
+            {% endif %}
           </ul>
         </nav>
         <h3 class="text-muted">Tuber</h3>
@@ -29,7 +34,7 @@
       <div class="jumbotron">
         <h1>Tuber</h1>
         <p class="lead"></p>
-        <p><a class="btn btn-lg btn-success" href="showSignUp" role="button">Find a tutor!</a></p>
+        <p><a class="btn btn-lg btn-success" href="signUp" role="button">Find a tutor!</a></p>
       </div>
 
       <div class="row marketing">

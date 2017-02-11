@@ -9,17 +9,31 @@
  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link href="../static/css/signup.css" rel="stylesheet">
+
+    <script>
+    function notLoggedIn() {
+        window.location.assign("/signin.html")
+    }
+    </script>
  
  
 </head>
  
 <body>
+
+    {% if not current_user.is_authenticated %}
+        <script>
+            notLoggedIn();
+        </script>
+    {% endif %}
  
     <div class="container">
         <div class="header">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="/logout">Logout</a>
+                    <li role="presentation"><a href="/">Home</a>
+                    <li role="presentation" class="active"><a href="#">My Account</a>
+                    <li role="presentation"><a href="/logout">Logout</a>
                     </li>
                 </ul>
             </nav>
@@ -27,7 +41,10 @@
         </div>
  
         <div class="jumbotron">
-            <h1>Welcome, Superman</h1>
+            <h4>User ID: {{ current_user.id }}</h4>
+            <h4>Facebook ID: {{ current_user.social_id}}</h4>
+            <h4>Nickname: {{ current_user.nickname}}</h4>
+            <h4>Email: {{ current_user.email}}</h4>
  
         </div>
  
