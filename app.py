@@ -49,6 +49,37 @@ def index():
 def userHome():
     return render_template('userHome.html')
 
+@app.route('/showAddTutor')
+def showAddWish():
+    return render_template('addTutor.html')
+
+@app.route('/addTutor',methods=['POST'])
+def addTutor():
+    try:
+        if session.get('user'):
+            _title = request.form['inputTitle']
+            _description = request.form['inputDescription']
+            _user = session.get('user')
+ 
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.callproc('sp_addTutor',(_title,_description,_user))
+            data = cursor.fetchall()
+ 
+            if len(data) is 0:
+                conn.commit()
+                return redirect('/userHome')
+            else:
+                return render_template('error.html',error = 'An error occurred!')
+ 
+        else:
+            return render_template('error.html',error = 'Unauthorized Access')
+    except Exception as e:
+        return render_template('error.html',error = str(e))
+    finally:
+        cursor.close()
+        conn.close()
+
 @app.route('/signin.html')
 def signIn():
     return render_template('signin.html')
