@@ -60,6 +60,10 @@ def load_user(id):
 def index():
     return render_template('index.html')
 
+@app.route('/map')
+def map():
+    return render_template('map.html')
+
 @app.route('/userHome')
 def userHome():
     return render_template('userHome.html')

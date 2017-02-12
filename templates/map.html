@@ -1,10 +1,46 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Geolocation</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
+<<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Tuber Student</title>
+ 
+ 
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/css/signup.css" rel="stylesheet">
+ 
+ 
+</head>
+ 
+
+  <body>
+
+
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="#">Home</a>
+                    <li role="presentation"><a href="/userHome">My Account</a>
+                    {% if current_user.available %}
+                        <li role="presentation"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
+                    {% else %}
+                        <li role="presentation"><a href="/pending">Tutor Requests</a></li>
+                    {% endif %}
+                    {% if not current_user.is_authenticated %}
+                        <li role="presentation"><a href="signin.html">Log In</a></li>
+                    {% else %}
+                        <li role="presentation"><a href="/logout">Log out</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <h3 class="text-muted"><a href="/userHome">Tuber</a></h3>
+        </div>
+    
+        <div class="jumbotron">
+            
+         <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
@@ -17,8 +53,6 @@
         padding: 0;
       }
     </style>
-  </head>
-  <body>
     <div id="map"></div>
     <script>
       // Note: This example requires that you consent to location sharing when
@@ -63,5 +97,16 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBp2TYFi042emFh4QqqXPtUZCgM_sctki8&callback=initMap">
     </script>
-  </body>
+ 
+        </div>
+        
+ 
+ 
+        <footer class="footer">
+            <p>&copy; Tuber 2017</p>
+        </footer>
+ 
+    </div>
+</body>
+ 
 </html>
