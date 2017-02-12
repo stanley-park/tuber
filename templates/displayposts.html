@@ -31,32 +31,26 @@
 
       <div class="jumbotron">
       {% for user in users %}
-          {% if user.available %}
-            <div class="well">
+        {% if user.available %}
+          <div class="well">
             <div class="row">
-                <div class="col-sm-12 col-md-12">
-
-                        <div class="caption">
-                            <h3>{{ user.email }}</h3>
-                            <p>Tutor is: {{user.nickname}}</p>
-                            <p>
-                                <a href="/contact/{{user.id}}" class="btn btn-danger btn-sm" >
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                                </a>
-                            </p>
-                        </div>
-                 
-                </div>
+              <div class="col-sm-12 col-md-12">
+                <div class="caption">
+                  <h3>{{ user.email }}</h3>
+                  <p>Tutor is: {{user.nickname}}</p>
+                  <p>
+                  <a href="/contact/{{user.id}}" class="btn btn-danger btn-sm" >
+                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                  </a>
+                  </p>
+                </div>           
+              </div>
             </div>
-        </div>        
-          {% endif %}
+          </div>        
+        {% endif %}
       {% endfor %}
-        
- 
       </form>
       </div>
-
-      
 
       <footer class="footer">
         <p>&copy; Tuber 2017</p>

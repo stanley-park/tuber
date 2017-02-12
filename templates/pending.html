@@ -47,14 +47,24 @@
         <div class="jumbotron">
             <h3>Requests for: </h3>
             {%for post in posts%}
+                {% if current_user.id ==  post.id_of_recipient %}
+                <div class="well">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <div class="caption">
+                          <h4>Course ID: {{ post.id_of_recipient }}</h4>
+                          <h4>Course description: {{ current_user.id }}</h4>
+                          <br>
+                          <a href="#" class="btn btn-success btn-xs">
+                          <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Accept
+                          </a>
+                          </p>
+                        </div>           
+                      </div>
+                    </div>
+                  </div>        
 
-            {% if current_user.id ==  post.id_of_recipient %}
-            
-                <h4>Course ID: {{ post.id_of_recipient }}</h4>
-                <h4>Course description: {{ current_user.id }}</h4>
-                <a href="#"> Accept </a>
-
-            {% endif %}
+                {% endif %}
             
             {% endfor %}
  
