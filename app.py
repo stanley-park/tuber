@@ -30,6 +30,7 @@ class User(UserMixin, db.Model):
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
     available = db.Column(db.Boolean, default=False)
+    pending = db.Column(db.Integer, nullable=False, default=0)
 
 
 class Posts(UserMixin, db.Model):
@@ -91,16 +92,6 @@ def displayposts():
     users = User.query.all()
 
     return render_template('displayposts.html', users=users)
-
-@app.route('/', methods=['POST'])
-def my_form_post():
-
-    available = True
-    text = request.form['text']
-    post = Posts(text=text)
-    db.session.add(post)
-    db.session.commit()
-    return redirect(url_for('displayposts'))
 
 
 @app.route('/logout')
