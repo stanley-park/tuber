@@ -10,7 +10,6 @@ from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 import requests
 import json
-import pygeoip
 from decimal import Decimal
 from math import radians, cos, sin, asin, sqrt
 
