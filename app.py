@@ -36,7 +36,10 @@ class User(UserMixin, db.Model):
 class Posts(UserMixin, db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(64), nullable=False)
+    id_of_recipient = db.Column(db.Integer, nullable=False)
+
+db.create_all()
+db.session.commit()
 
 @lm.user_loader
 def load_user(id):
@@ -103,7 +106,20 @@ def displayposts():
 def contact(id):
     user = load_user(id)
 
-    user.pending += 1
+    counter = 1
+
+    post = Posts(id_of_recipient = id)
+
+    posts = Posts.query.all()
+    for indPost in posts:
+        if (indPost.id_of_recipient == current_user.id):
+            counter += 1
+
+
+
+    db.session.add(post)
+
+    user.pending = counter
     db.session.commit()
     return redirect(url_for('userHome'))
 
@@ -142,5 +158,4 @@ def oauth_callback(provider):
 
 
 if __name__ == '__main__':
-    db.create_all()
     app.run(debug=True)
