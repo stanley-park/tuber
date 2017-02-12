@@ -70,7 +70,7 @@ def index():
 
 @app.route('/', methods=['POST'])
 def index_post():
-    user = load_user(current_user.get_id())
+    user = load_user(current_user.id)
 
     name = request.form['name']
     major = request.form['major']
@@ -219,6 +219,7 @@ def oauth_callback(provider):
         user = User(social_id=social_id, nickname=username, email=email)
         db.session.add(user)
         db.session.commit()
+        login_user(user, True)
         return redirect(url_for('showFirstTime'))
     login_user(user, True)
     return redirect(url_for('userHome'))
