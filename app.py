@@ -110,6 +110,7 @@ def error_500(e):
 
 @app.route('/requestTutors')
 def showRequestTutors():
+
     return render_template('requestTutors.html')
 
 @app.route('/activateTutor')
@@ -217,10 +218,14 @@ def oauth_callback(provider):
     user = User.query.filter_by(social_id=social_id).first()
     if not user:
         user = User(social_id=social_id, nickname=username, email=email)
+        
         db.session.add(user)
+        
         db.session.commit()
         login_user(user, True)
         return redirect(url_for('showFirstTime'))
+
+    db.session.commit()
     login_user(user, True)
     return redirect(url_for('userHome'))
  

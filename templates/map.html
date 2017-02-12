@@ -64,6 +64,12 @@
 
       function initMap() {
         
+        var map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: 37.366670, lng: -120.424517},
+              zoom: 18
+        });
+
+        var infoWindow = new google.maps.InfoWindow({map: map});
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
@@ -73,12 +79,26 @@
               lng: position.coords.longitude
             };
 
-            var map = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: -34.397, lng: 150.644},
-              zoom: 18
+            var myLatLng2 = {lat: 37.3666349, lng: -120.422957};
+            var marker = new google.maps.Marker({
+              position: myLatLng2,
+              map: map,
+              title: 'John Smith'
             });
-            
-            var infoWindow = new google.maps.InfoWindow({map: map});
+
+            var myLatLng3 = {lat: 37.366245, lng: -120.426758};
+            var marker2 = new google.maps.Marker({
+              position: myLatLng3,
+              map: map,
+              title: 'Albert Einstein'
+            });
+
+            var myLatLng4 = {lat: 37.370633, lng: -120.429064};
+            var marker3 = new google.maps.Marker({
+              position: myLatLng4,
+              map: map,
+              title: 'The Queen'
+            });
 
             infoWindow.setPosition(pos);
             infoWindow.setContent('You are here.');
