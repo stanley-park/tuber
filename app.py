@@ -113,10 +113,6 @@ def ip(ip_address):
     geo_data = geolocate.record_by_addr(ip_address)
     return jsonify(geo_data)
 
-@app.errorhandler(500)
-def error_500(e):  
-    return jsonify({'error': 'Error finding location data for that address'})
-
 
 @app.route('/requestTutors')
 def showRequestTutors():
