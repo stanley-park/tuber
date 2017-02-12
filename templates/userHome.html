@@ -34,7 +34,11 @@
                     <li role="presentation"><a href="/">Home</a>
                     <li role="presentation" class="active"><a href="#">My Account</a>
                     <li role="presentation"><a href="/pending">Pending <span class="badge">{{ current_user.pending}}</a></li>
-                    <li role="presentation"><a href="/logout">Logout</a></li>
+                    {% if not current_user.is_authenticated %}
+                        <li role="presentation"><a href="/logout">Log In</a></li>
+                    {% else %}
+                        <li role="presentation"><a href="/logout">Log out</a></li>
+                    {% endif %}
                 </ul>
             </nav>
             <h3 class="text-muted"><a href="/userHome">Tuber</a></h3>
