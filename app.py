@@ -51,6 +51,12 @@ def index():
 def userHome():
     return render_template('userHome.html')
 
+@app.route('/pending', methods=['GET', 'POST'])
+def pending():
+    posts = Posts.query.all()
+
+    return render_template('pending.html', posts=posts)
+
 @app.route('/requestTutors')
 def showRequestTutors():
     return render_template('requestTutors.html')

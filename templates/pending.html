@@ -2,7 +2,7 @@
 <html lang="en">
  
 <head>
-    <title>Tuber Student</title>
+    <title>Tuber Inbox</title>
  
  
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,8 +32,8 @@
             <nav>
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation"><a href="/">Home</a>
-                    <li role="presentation" class="active"><a href="#">My Account</a>
-                    <li role="presentation"><a href="/pending">Pending <span class="badge">{{ current_user.pending}}</a></li>
+                    <li role="presentation"><a href="/userHome">My Account</a>
+                    <li role="presentation" class="active"><a href="/pending">Pending <span class="badge">NumRequests</a></li>
                     <li role="presentation"><a href="/logout">Logout</a></li>
                 </ul>
             </nav>
@@ -41,17 +41,13 @@
         </div>
     
         <div class="jumbotron">
+            <h3>Requests for: </h3>
+            {%for post in posts%}
             
+            <h4>Course ID: {{ post.id }}</h4>
+            <h4>Course description: {{ post.text}}</h4>
             
-            <h4>User ID: {{ current_user.id }}</h4>
-            <h4>Facebook ID: {{ current_user.social_id}}</h4>
-            <h4>Nickname: {{ current_user.nickname}}</h4>
-            <h4>Email: {{ current_user.email}}</h4>
-            <h4>Availability: {{ current_user.available}}</h4>
-            <h4>Pending: {{ current_user.pending}}</h4>
-
-            <p><a class="btn btn-lg btn-success" href="/requestTutors" role="button">I need help!</a>
-            <a class="btn btn-lg btn-success" href="/requestTutors" role="button">I can help!</a></p>
+            {% endfor %}
  
         </div>
  

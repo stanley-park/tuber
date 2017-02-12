@@ -23,6 +23,7 @@
               <li role="presentation"><a href="/showSignIn">Sign In</a></li>
             {% else %}
               <li role="presentation"><a href="/userHome">My Account</a></li>
+              <li role="presentation"><a href="/pending">Pending <span class="badge">NumRequests</a></li>
               <li role="presentation"><a href="/logout">Log out</a></li>
             {% endif %}
           </ul>
@@ -33,7 +34,11 @@
       <div class="jumbotron">
         <h1>Tuber</h1>
         <p class="lead"></p>
-        <p><a class="btn btn-lg btn-success" href="signUp" role="button">Find a tutor!</a></p>
+        {% if not current_user.is_authenticated %}
+          <p><a class="btn btn-lg btn-success" href="/showSignIn" role="button">Sign Up!</a></p>
+        {% else %}
+          <p><a class="btn btn-lg btn-success" href="/requestTutors" role="button">Find a tutor!</a></p>
+        {% endif %}
       </div>
 
       <div class="row marketing">
