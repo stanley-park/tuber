@@ -52,7 +52,7 @@
         <div class="jumbotron">
             
             {% if current_user.accepted %} 
-                <h4> You are currently tutoring {{ current_user.accepted_email }} </h4>
+                <h4> You are currently tutoring {{ current_user.accepted_name }} </h4>
                 <a href="#"> Done tutoring </a>
             {% endif %}
                 <br><br><br><br><br>
@@ -64,6 +64,11 @@
             <h4>Availability: {{ current_user.available}}</h4>
             <h4>Pending: {{ current_user.pending}}</h4>
             <h4>Accepted: {{ current_user.accepted}}</h4>
+            <h4>Name: {{ current_user.name}}</h4>
+            <h4>Major: {{ current_user.major}}</h4>
+            <h4>Best Class: {{ current_user.best_class}}</h4>
+            <h4>Wants Tutors For: {{ current_user.tutor_wants}}</h4>
+
             <br>
 
             <p><a class="btn btn-xs btn-primary" href="/requestTutors" role="button">I need help!</a>&nbsp;&nbsp;&nbsp;&nbsp;

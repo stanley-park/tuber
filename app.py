@@ -44,8 +44,11 @@ class User(UserMixin, db.Model):
     lat = db.Column(db.FLOAT, nullable=True)
     lon = db.Column(db.FLOAT, nullable=True)
     accepted = db.Column(db.Integer, nullable=False, default=0)
-    accepted_email = db.Column(db.String(64))
-
+    accepted_name = db.Column(db.String(64))
+    name = db.Column(db.String(64), nullable=True)
+    major = db.Column(db.String(64), nullable=True)
+    best_class = db.Column(db.String(64), nullable=True)
+    tutor_wants = db.Column(db.String(64), nullable=True)
 
 class Posts(UserMixin, db.Model):
     __tablename__ = 'posts'
@@ -64,6 +67,22 @@ def load_user(id):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/', methods=['POST'])
+def index_post():
+    user = load_user(current_user.id)
+
+    name = request.form['name']
+    major = request.form['major']
+    bestclass = request.form['bestclass']
+    wanttutors = request.form['wanttutors']
+
+    user.name = name
+    user.major = major
+    user.best_class = bestclass
+    user.tutor_wants = wanttutors
+    db.session.commit()
+    return redirect(url_for('userHome'))
 
 @app.route('/map')
 def map():
@@ -166,7 +185,7 @@ def accept(id):
     user = load_user(id)
 
     current_user.accepted = id
-    current_user.accepted_email = user.email
+    current_user.accepted_name = user.name
     db.session.commit()
 
     return redirect(url_for('deactivateTutor'))
@@ -200,6 +219,7 @@ def oauth_callback(provider):
         user = User(social_id=social_id, nickname=username, email=email)
         db.session.add(user)
         db.session.commit()
+        login_user(user, True)
         return redirect(url_for('showFirstTime'))
     login_user(user, True)
     return redirect(url_for('userHome'))
