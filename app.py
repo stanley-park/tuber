@@ -6,6 +6,15 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
 from oauth import OAuthSignIn
 
+from flask_googlemaps import GoogleMaps
+from flask_googlemaps import Map
+import requests
+import json
+from decimal import Decimal
+from math import radians, cos, sin, asin, sqrt
+
+
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '24242424'
@@ -16,6 +25,8 @@ app.config['OAUTH_CREDENTIALS'] = {
         'secret': '046aa45aec64338848b150b4713f2b04'
     }
 }
+app.config['GOOGLEMAPS_KEY'] = "AIzaSyCZUODD2xlOWl6lb14VwG24F3n8lh2gRoI"
+GoogleMaps(app)
 
 db = SQLAlchemy(app)
 lm = LoginManager(app)
@@ -51,6 +62,10 @@ def load_user(id):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/map')
+def map():
+    return render_template('map.html')
 
 @app.route('/userHome')
 def userHome():
@@ -176,7 +191,24 @@ def oauth_callback(provider):
         return redirect(url_for('showFirstTime'))
     login_user(user, True)
     return redirect(url_for('userHome'))
+ 
 
+def haversine(lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians 
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    km = 6367 * c
+    return km
+
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

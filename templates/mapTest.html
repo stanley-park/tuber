@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+
+            {{"decoupled-map"|googlemap_js(37.4419, -122.1419, markers=[(37.4419, -122.1419)])}}
+            {{sndmap.js}}
+    </head>
+
+  
+    <body>
+        <h1><center>Tutor in Radius</center></h1>
+
+           <!-- begin google map API -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+     <div id="map"></div>
+    <script> <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADpi7mh1X6Xc0UjWZWDaGWgbIdUHiod7o&sensor=true></script></script>
+    <script>
+      // Note: This example requires that you consent to location sharing when
+      // prompted by your browser. If you see the error "The Geolocation service
+      // failed.", it means you probably did not give permission for the browser to
+      // locate you.
+
+      function initMap() {
+        var myLatLng = {lat: -34.397, lng: 150.644}
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: myLatLng,
+          zoom: 13
+        });
+
+        var infoWindow = new google.maps.InfoWindow({map: map});
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+        var marker = new google.maps.Marker({
+        position: pos,
+        map: map
+        });
+      
+
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+      }
+    </script>
+
+ 
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADpi7mh1X6Xc0UjWZWDaGWgbIdUHiod7o&callback=initMap">
+    </script>
+  </body>
+</html>
+
+
+        <h2>Red Marker: Your Location</h2>
+        <h2>Blue Marker: Tutors</h2>
+
+         
+
+         <script>
+           window.onload = function geoFindMe() {
+              var output = document.getElementById("out");
+              if (!navigator.geolocation){
+                output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+                return;
+              }
+
+            function success(position) {
+              var latitude  = position.coords.latitude;
+              var longitude = position.coords.longitude;
+              output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
+
+            }
+            function error() {
+              output.innerHTML = "Unable to retrieve your location";
+            }
+            output.innerHTML = "<p>Locating…</p>";
+            navigator.geolocation.getCurrentPosition(success, error);
+          }
+
+        </script>
+
+        <div id="out"></div>
+
+       </body>
+    </body>
+
+</html>
