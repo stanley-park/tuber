@@ -7,6 +7,15 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
 from oauth import OAuthSignIn
 
+from flask_googlemaps import GoogleMaps
+from flask_googlemaps import Map
+import requests
+import json
+from decimal import Decimal
+from math import radians, cos, sin, asin, sqrt
+
+
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '24242424'
@@ -17,6 +26,8 @@ app.config['OAUTH_CREDENTIALS'] = {
         'secret': '046aa45aec64338848b150b4713f2b04'
     }
 }
+app.config['GOOGLEMAPS_KEY'] = "AIzaSyCZUODD2xlOWl6lb14VwG24F3n8lh2gRoI"
+GoogleMaps(app)
 
 db = SQLAlchemy(app)
 lm = LoginManager(app)
@@ -116,6 +127,68 @@ def oauth_callback(provider):
     login_user(user, True)
     return redirect(url_for('userHome'))
 
+
+
+@app.route('/map')
+
+def mapview():
+    send_url = "http://freegeoip.net/json"
+    r = requests.get(send_url)
+    j = json.loads(r.text)
+    lat = j['latitude']
+    lon = j['longitude']
+    position = [lat, lon]
+
+    targetX = 37.363835099999996,
+    targetY = -120.42992299999999,
+
+    tutorTotal = 6 #hardcoded
+    markers = []
+
+# creating a map in the 
+    sndmap = Map(
+        zoom_control = True,
+        scale_control = True,
+        zoom = 9,
+        identifier="sndmap",
+        lat= float(position[0]),
+        lng= float(position[1]),
+
+
+        markers=[
+        {
+            'icon': 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            'lat':position[0],
+            'lng': position[1],
+            'infobox': "<b>My Location</b>" +"<br>" + str(position[0]) + " , " + str(position[1])
+        },
+        {
+            'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            'lat': targetX,
+            'lng': targetY,
+            'infobox': "<b>Tutor</b>" +"<br>" + str(targetX) + " , " + str(targetY)
+        }
+        ]
+        )	
+    return render_template('mapTest.html', sndmap = sndmap)
+ 
+
+def haversine(lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians 
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    km = 6367 * c
+    return km
+
+    
 
 if __name__ == '__main__':
     db.create_all()
