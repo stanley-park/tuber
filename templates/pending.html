@@ -33,7 +33,11 @@
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation"><a href="/">Home</a>
                     <li role="presentation"><a href="/userHome">My Account</a>
-                    <li role="presentation" class="active"><a href="/pending">Pending <span class="badge">{{ current_user.pending }}</a></li>
+                    {% if current_user.available %}
+                        <li role="presentation" class="active"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
+                    {% else %}
+                        <li role="presentation" class="active"><a href="/pending">Tutor Requests</a></li>
+                    {% endif %}
                     {% if not current_user.is_authenticated %}
                         <li role="presentation"><a href="/logout">Log In</a></li>
                     {% else %}
@@ -45,6 +49,7 @@
         </div>
     
         <div class="jumbotron">
+<<<<<<< HEAD
             <h3>Requests for: </h3>
             {%for post in posts%}
                 {% if current_user.id ==  post.id_of_recipient %}
@@ -65,8 +70,25 @@
                   </div>        
 
                 {% endif %}
+=======
+            {% if current_user.available %}
+                <h3>Requests for: </h3>
+                {%for post in posts%}
+
+                {% if current_user.id ==  post.id_of_recipient %}
+                
+                    <h4>Course ID: {{ post.id_of_recipient }}</h4>
+                    <h4>Course description: {{ current_user.id }}</h4>
+                    <a href="#"> Accept </a>
+
+                {% endif %}
+                
+                {% endfor %}
+            {% else %}
+                <h4> Your availability is currently set to off. Turn it on to see tutoring requests. </h4>
+            {% endif %}
+>>>>>>> origin/master
             
-            {% endfor %}
  
         </div>
  

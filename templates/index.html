@@ -21,7 +21,11 @@
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation" class="active"><a href="#">Home</a>
                     <li role="presentation"><a href="/userHome">My Account</a>
-                    <li role="presentation"><a href="/pending">Pending <span class="badge">{{ current_user.pending}}</a></li>
+                    {% if current_user.available %}
+                        <li role="presentation"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
+                    {% else %}
+                        <li role="presentation"><a href="/pending">Tutor Requests</a></li>
+                    {% endif %}
                     {% if not current_user.is_authenticated %}
                         <li role="presentation"><a href="signin.html">Log In</a></li>
                     {% else %}
