@@ -86,14 +86,11 @@ def showSignin():
 def showFirstTime():
     return render_template('firsttime.html')
 
-@app.route('/displayposts')
+@app.route('/displayposts', methods=['POST'])
 def displayposts():
-    posts = Posts.query.all()
+    users = User.query.all()
 
-    for post in posts:
-        text = post.text
-
-    return render_template('displayposts.html', posts=posts)
+    return render_template('displayposts.html', users=users)
 
 @app.route('/', methods=['POST'])
 def my_form_post():

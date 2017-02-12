@@ -29,6 +29,7 @@
       </div>
 
       <div class="jumbotron">
+<<<<<<< HEAD
         
         
             
@@ -55,6 +56,13 @@
                 {% endfor %}
           
     
+=======
+        {% for user in users %}
+        	{% if user.available %}
+          		<h1>{{ user.nickname }}</h1>
+        	{% endif %}
+        {% endfor %}
+>>>>>>> origin/master
       </form>
       </div>
 
