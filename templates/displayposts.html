@@ -29,8 +29,10 @@
       </div>
 
       <div class="jumbotron">
-        {% for post in posts %}
-          <h1>{{ post.text }}</h1>
+        {% for user in users %}
+        	{% if user.available %}
+          		<h1>{{ user.nickname }}</h1>
+        	{% endif %}
         {% endfor %}
       </form>
       </div>
