@@ -92,6 +92,16 @@ def map():
 def userHome():
     return render_template('userHome.html')
 
+@app.route('/donetutoring')
+def doneTutoring():
+    user = load_user(current_user.id)
+
+    user.accepted = 0
+    user.accepted_name = ""
+
+    db.session.commit()
+    return redirect(url_for('userHome'))
+
 @app.route('/pending', methods=['GET', 'POST'])
 def pending():
     posts = Posts.query.all()

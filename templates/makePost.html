@@ -39,6 +39,8 @@
         <p>
         {% if current_user.available %}
           <a href="/deactivateTutor">Turn availability Off</a>
+        {% elif current_user.accepted %}
+          <h4> You are currently tutoring someone. Finish tutoring to turn your availability on. </h4>
         {% else %}
           <a href="/activateTutor">Turn availability On</a>
         {% endif %}
