@@ -42,9 +42,10 @@
             <div class="row">
               <div class="col-sm-12 col-md-12">
                 <div class="caption">
-                  <h3>{{ user.email }}</h3>
-                  <p>Tutor is: {{user.nickname}}</p>
-                  <p>
+                  <h3>{{ user.name }}</h3>
+                  <p>Requests Pending: {{user.pending}}</p>
+                  <p>Specializes in: {{user.major}}</p>
+                  
                   <a href="/contact/{{user.id}}" class="btn btn-danger btn-sm" >
                   <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                   </a>
