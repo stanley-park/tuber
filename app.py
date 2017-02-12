@@ -178,51 +178,6 @@ def oauth_callback(provider):
         return redirect(url_for('showFirstTime'))
     login_user(user, True)
     return redirect(url_for('userHome'))
-
-
-
-@app.route('/map')
-
-def mapview():
-    send_url = "http://freegeoip.net/json"
-    r = requests.get(send_url)
-    j = json.loads(r.text)
-    lat = j['latitude']
-    lon = j['longitude']
-    position = [lat, lon]
-
-    targetX = 37.363835099999996,
-    targetY = -120.42992299999999,
-
-    tutorTotal = 6 #hardcoded
-    markers = []
-
-# creating a map in the 
-    sndmap = Map(
-        zoom_control = True,
-        scale_control = True,
-        zoom = 9,
-        identifier="sndmap",
-        lat= float(position[0]),
-        lng= float(position[1]),
-
-
-        markers=[
-        {
-            'icon': 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-            'lat':position[0],
-            'lng': position[1],
-            'infobox': "<b>My Location</b>" +"<br>" + str(position[0]) + " , " + str(position[1])
-        },
-        {
-            'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-            'lat': targetX,
-            'lng': targetY,
-            'infobox': "<b>Tutor</b>" +"<br>" + str(targetX) + " , " + str(targetY)
-        }
-        ]
-        )	
-    return render_template('mapTest.html', sndmap = sndmap)
  
 
 def haversine(lon1, lat1, lon2, lat2):
