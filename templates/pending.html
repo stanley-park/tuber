@@ -50,7 +50,7 @@
     
         <div class="jumbotron">
             {% if current_user.available %}
-                <h3>Requests for: </h3>
+                <h3>Tutor Requests</h3>
                 {%for post in posts%}
                 {% if current_user.id ==  post.id_of_recipient %}
                 <div class="well">
@@ -60,7 +60,7 @@
                           <h4>Course ID: {{ post.id_of_recipient }}</h4>
                           <h4>Course description: {{ current_user.id }}</h4>
                           <br>
-                          <a href="#" class="btn btn-success btn-xs">
+                          <a href="/accept/{{ post.id_of_sender}}" class="btn btn-success btn-xs">
                           <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Accept
                           </a>
                           </p>
@@ -72,7 +72,7 @@
                 {% endif %}
             {% endfor %}
             {% else %}
-                <h4> Your availability is currently set to off. Turn it on to see tutoring requests. </h4>
+                <h4> Your availability is currently set to off. Turn it on to receive tutoring requests. </h4>
             {% endif %}            
             
         </div>
