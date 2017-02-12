@@ -93,6 +93,14 @@ def displayposts():
 
     return render_template('displayposts.html', users=users)
 
+@app.route('/contact/<id>')
+def contact(id):
+    user = load_user(id)
+
+    user.pending += 1
+    db.session.commit()
+    return redirect(url_for('userHome'))
+
 
 @app.route('/logout')
 def logout():
