@@ -1,6 +1,6 @@
 #!flask/bin/python
 
-from flask import Flask, redirect, url_for, render_template, flash, request
+from flask import Flask, redirect, url_for, render_template, flash, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
@@ -10,6 +10,7 @@ from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 import requests
 import json
+import pygeoip
 from decimal import Decimal
 from math import radians, cos, sin, asin, sqrt
 
@@ -41,6 +42,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), nullable=True)
     available = db.Column(db.Boolean, default=False)
     pending = db.Column(db.Integer, nullable=False, default=0)
+    lat = db.Column(db.FLOAT, nullable=True)
+    lon = db.Column(db.FLOAT, nullable=True)
 
 
 class Posts(UserMixin, db.Model):
@@ -73,6 +76,16 @@ def pending():
     posts = Posts.query.all()
 
     return render_template('pending.html', posts=posts)
+
+@app.route('/api/ip/<ip_address>')
+def ip(ip_address):  
+    geo_data = geolocate.record_by_addr(ip_address)
+    return jsonify(geo_data)
+
+@app.errorhandler(500)
+def error_500(e):  
+    return jsonify({'error': 'Error finding location data for that address'})
+
 
 @app.route('/requestTutors')
 def showRequestTutors():

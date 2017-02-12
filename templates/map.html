@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<br><br>
 <html lang="en">
  
 <head>
@@ -21,8 +21,10 @@
         <div class="header">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a>
+                    <li role="presentation"><a href="#">Home</a>
                     <li role="presentation"><a href="/userHome">My Account</a>
+                    <li role="presentation" class="active"><a href="/map">Map</a>
+
                     {% if current_user.available %}
                         <li role="presentation"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
                     {% else %}
@@ -70,11 +72,13 @@
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
+
             var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 18
-        });
-        var infoWindow = new google.maps.InfoWindow({map: map});
+              center: {lat: -34.397, lng: 150.644},
+              zoom: 18
+            });
+            
+            var infoWindow = new google.maps.InfoWindow({map: map});
 
             infoWindow.setPosition(pos);
             infoWindow.setContent('You are here.');
