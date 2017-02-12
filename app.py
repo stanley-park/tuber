@@ -75,6 +75,15 @@ def activateTutor():
 def deactivateTutor():
     user = load_user(current_user.get_id())
     user.available = False
+    user.pending = 0
+
+    posts = Posts.query.all()
+
+    for indPost in posts:
+        if (indPost.id_of_recipient == current_user.id):
+            db.session.delete(indPost)
+            
+
     db.session.commit()
     return redirect(url_for('userHome'))
 
