@@ -22,6 +22,7 @@
           <ul class="nav nav-pills pull-right">
             <li role="presentation" ><a href="/">Home</a></li>
             <li role="presentation" class="active"><a href="/userHome">My Account</a></li>
+            <li role="presentation"><a href="/map">Map</a></li>
               {% if current_user.available %}
                   <li role="presentation"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
               {% else %}

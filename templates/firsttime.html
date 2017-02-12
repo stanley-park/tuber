@@ -1,4 +1,4 @@
-
+<br>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,14 +18,11 @@
       <div class="header">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            {% if not current_user.is_authenticated %}
-              <li role="presentation"><a href="/showSignIn">Sign In</a></li>
-            {% else %}
-              <li role="presentation"><a href="/userHome">My Account</a></li>
-              <li role="presentation"><a href="/pending">Pending <span class="badge">NumRequests</a></li>
-              <li role="presentation"><a href="/logout">Log out</a></li>
-            {% endif %}
+            <li role="presentation" class="active"><a href="/">Home</a></li>
+            <li role="presentation"><a href="/showSignIn">My Account</a></li>
+            <li role="presentation"><a href="/map">Map</a></li>
+            <li role="presentation"><a href="/showSignIn">Tutor Requests</a></li>
+            <li role="presentation"><a href="/showSignIn">Sign In</a></li>
           </ul>
         </nav>
         <h3 class="text-muted"><a href="#">Tuber</a></h3>
