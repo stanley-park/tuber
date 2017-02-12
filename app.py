@@ -152,7 +152,7 @@ def oauth_callback(provider):
         user = User(social_id=social_id, nickname=username, email=email)
         db.session.add(user)
         db.session.commit()
-        #return redirect(url_for('firstTime'))
+        return redirect(url_for('showFirstTime'))
     login_user(user, True)
     return redirect(url_for('userHome'))
 
