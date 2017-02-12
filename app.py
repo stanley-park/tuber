@@ -12,13 +12,17 @@ import requests
 import json
 from decimal import Decimal
 from math import radians, cos, sin, asin, sqrt
+import os
 
 
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '24242424'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+if os.environ['DATABASE_URL']:
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['OAUTH_CREDENTIALS'] = {
     'facebook': {
         'id': '408792279458709',
