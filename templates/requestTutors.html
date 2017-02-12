@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Help other students!</title>
+
+   
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/css/signup.css" rel="stylesheet">
+    <script src="../static/js/jquery-1.11.2.js"></script>
+    <script src="../static/js/signUp.js"></script>
+   
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" ><a href="/">Home</a></li>
+            <li role="presentation" class="active"><a href="/userHome">My Account</a></li>
+                {% if current_user.available %}
+                    <li role="presentation"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
+                {% else %}
+                    <li role="presentation"><a href="/pending">Tutor Requests</a></li>
+                {% endif %}
+            <li role="presentation"><a href="/logout">Log out</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted"><a href="/userHome">Tuber</a></h3>
+      </div>
+
+      <div class="jumbotron">
+        <form class="form-horizontal" method="POST" action="/displayposts">
+                <fieldset>
+ 
+                    <!-- Form Name -->
+                    <legend>What do you need help with?</legend>
+ 
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="txtTitle">Course Code</label>
+                        <div class="col-md-4">
+                            <input id="txtTitle" name="text" type="text" placeholder="e.g. CSE20" class="form-control input-md">
+                        </div>
+                    </div>
+ 
+                    <!-- Textarea -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="txtTitle">Specialization</label>
+                        <div class="col-md-4">
+                            <input id="txtTitle" name="text" type="text" placeholder="e.g. Creative Writing" class="form-control input-md">
+                        </div>
+                    </div>
+ 
+                    <!-- Button -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="singlebutton"></label>
+                        <div class="col-md-4">
+                            <input id="singlebutton" name="singlebutton" class="btn btn-xs btn-success" type="submit" value="Get me some help!" />
+                        </div>
+                    </div>
+ 
+                </fieldset>
+            </form>
+      </div>
+
+      
+
+      <footer class="footer">
+        <p>&copy; Tuber 2017</p>
+      </footer>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Tuber Inbox</title>
+ 
+ 
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/css/signup.css" rel="stylesheet">
+
+    <script>
+    function notLoggedIn() {
+        window.location.assign("/signin.html")
+    }
+    </script>
+ 
+ 
+</head>
+ 
+<body>
+
+    {% if not current_user.is_authenticated %}
+        <script>
+            notLoggedIn();
+        </script>
+    {% endif %}
+ 
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation"><a href="/">Home</a>
+                    <li role="presentation"><a href="/userHome">My Account</a>
+                    {% if current_user.available %}
+                        <li role="presentation" class="active"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
+                    {% else %}
+                        <li role="presentation" class="active"><a href="/pending">Tutor Requests</a></li>
+                    {% endif %}
+                    {% if not current_user.is_authenticated %}
+                        <li role="presentation"><a href="/logout">Log In</a></li>
+                    {% else %}
+                        <li role="presentation"><a href="/logout">Log out</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <h3 class="text-muted"><a href="/userHome">Tuber</a></h3>
+        </div>
+    
+        <div class="jumbotron">
+<<<<<<< HEAD
+            <h3>Requests for: </h3>
+            {%for post in posts%}
+                {% if current_user.id ==  post.id_of_recipient %}
+                <div class="well">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <div class="caption">
+                          <h4>Course ID: {{ post.id_of_recipient }}</h4>
+                          <h4>Course description: {{ current_user.id }}</h4>
+                          <br>
+                          <a href="#" class="btn btn-success btn-xs">
+                          <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Accept
+                          </a>
+                          </p>
+                        </div>           
+                      </div>
+                    </div>
+                  </div>        
+
+                {% endif %}
+=======
+            {% if current_user.available %}
+                <h3>Requests for: </h3>
+                {%for post in posts%}
+
+                {% if current_user.id ==  post.id_of_recipient %}
+                
+                    <h4>Course ID: {{ post.id_of_recipient }}</h4>
+                    <h4>Course description: {{ current_user.id }}</h4>
+                    <a href="#"> Accept </a>
+
+                {% endif %}
+                
+                {% endfor %}
+            {% else %}
+                <h4> Your availability is currently set to off. Turn it on to see tutoring requests. </h4>
+            {% endif %}
+>>>>>>> origin/master
+            
+ 
+        </div>
+ 
+ 
+        <footer class="footer">
+            <p>&copy; Tuber 2017</p>
+        </footer>
+ 
+    </div>
+</body>
+ 
+</html>

@@ -33,21 +33,34 @@
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation"><a href="/">Home</a>
                     <li role="presentation" class="active"><a href="#">My Account</a>
-                    <li role="presentation"><a href="/logout">Logout</a>
-                    </li>
+                    {% if current_user.available %}
+                        <li role="presentation"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
+                    {% else %}
+                        <li role="presentation"><a href="/pending">Tutor Requests</a></li>
+                    {% endif %}
+                    {% if not current_user.is_authenticated %}
+                        <li role="presentation"><a href="/logout">Log In</a></li>
+                    {% else %}
+                        <li role="presentation"><a href="/logout">Log out</a></li>
+                    {% endif %}
                 </ul>
             </nav>
-            <h3 class="text-muted">Tuber</h3>
+            <h3 class="text-muted"><a href="/userHome">Tuber</a></h3>
         </div>
- 
+    
         <div class="jumbotron">
+            
+            
             <h4>User ID: {{ current_user.id }}</h4>
             <h4>Facebook ID: {{ current_user.social_id}}</h4>
             <h4>Nickname: {{ current_user.nickname}}</h4>
             <h4>Email: {{ current_user.email}}</h4>
+            <h4>Availability: {{ current_user.available}}</h4>
+            <h4>Pending: {{ current_user.pending}}</h4>
+            <br>
 
-            <a href="#">Request a Tutor</a>&nbsp;&nbsp;&nbsp;
-            <a href="#">Request a Study Group</a></p>    
+            <p><a class="btn btn-xs btn-primary" href="/requestTutors" role="button">I need help!</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-xs btn-primary btn-space" href="/makePost" role="button">I can help!</a></p>
  
         </div>
  

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Tuber Sign Up</title>
+    <title>Help other students!</title>
 
    
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -21,20 +21,26 @@
         <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" ><a href="/">Home</a></li>
-            <li role="presentation"><a href="/showSignIn">Sign In</a></li>
-            <li role="presentation" class="active"><a href="#">Sign Up</a></li>
+            <li role="presentation" class="active"><a href="/userHome">My Account</a></li>
+              {% if current_user.available %}
+                  <li role="presentation"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
+              {% else %}
+                  <li role="presentation"><a href="/pending">Tutor Requests</a></li>
+              {% endif %}
+            <li role="presentation"><a href="/logout">Log out</a></li>
           </ul>
         </nav>
-        <h3 class="text-muted">Tuber</h3>
+        <h3 class="text-muted"><a href="/userHome">Tuber</a></h3>
       </div>
 
       <div class="jumbotron">
-        <h1>Students</h1>
-        <form action="." method="POST">
-        <label for="test" class="sr-only">Type text here</label>
-        <input type="text" name="text" id="text" class="form-control" placeholder="Text" required autofocus>
-        
-        <input type="submit" name="my-form" value="Send">
+        <h1>Tutor some people!</h1>
+        <p>
+        {% if current_user.available %}
+          <a href="/deactivateTutor">Turn availability Off</a>
+        {% else %}
+          <a href="/activateTutor">Turn availability On</a>
+        {% endif %}
       </form>
       </div>
 

@@ -12,6 +12,11 @@ body {
 .form-signin .checkbox {
   margin-bottom: 10px;
 }
+
+.form-horizontal .control-label{
+    text-align: left;
+}
+
 .form-signin .checkbox {
   font-weight: normal;
 }

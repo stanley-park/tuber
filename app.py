@@ -1,6 +1,5 @@
 #!flask/bin/python
 
-
 from flask import Flask, redirect, url_for, render_template, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user,\
@@ -40,11 +39,17 @@ class User(UserMixin, db.Model):
     social_id = db.Column(db.String(64), nullable=False, unique=True)
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
+    available = db.Column(db.Boolean, default=False)
+    pending = db.Column(db.Integer, nullable=False, default=0)
+
 
 class Posts(UserMixin, db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(64), nullable=False)
+    id_of_recipient = db.Column(db.Integer, nullable=False)
+
+db.create_all()
+db.session.commit()
 
 @lm.user_loader
 def load_user(id):
@@ -58,6 +63,40 @@ def index():
 @app.route('/userHome')
 def userHome():
     return render_template('userHome.html')
+
+@app.route('/pending', methods=['GET', 'POST'])
+def pending():
+    posts = Posts.query.all()
+
+    return render_template('pending.html', posts=posts)
+
+@app.route('/requestTutors')
+def showRequestTutors():
+    return render_template('requestTutors.html')
+
+@app.route('/activateTutor')
+def activateTutor():
+    user = load_user(current_user.get_id())
+    user.available = True
+    db.session.commit()
+    return redirect(url_for('userHome'))
+
+@app.route('/deactivateTutor')
+def deactivateTutor():
+    user = load_user(current_user.get_id())
+    user.available = False
+    user.pending = 0
+
+    posts = Posts.query.all()
+
+    for indPost in posts:
+        if (indPost.id_of_recipient == current_user.id):
+            db.session.delete(indPost)
+            
+
+    db.session.commit()
+    return redirect(url_for('userHome'))
+
 
 @app.route('/signin.html')
 def signIn():
@@ -76,23 +115,32 @@ def showSignin():
 def showFirstTime():
     return render_template('firsttime.html')
 
-@app.route('/displayposts')
+@app.route('/displayposts', methods=['POST'])
 def displayposts():
+    users = User.query.all()
+
+    return render_template('displayposts.html', users=users)
+
+@app.route('/contact/<id>')
+def contact(id):
+    user = load_user(id)
+
+    counter = 1
+
+    post = Posts(id_of_recipient = id)
+
     posts = Posts.query.all()
+    for indPost in posts:
+        if (indPost.id_of_recipient == current_user.id):
+            counter += 1
 
-    for post in posts:
-        text = post.text
 
-    return render_template('displayposts.html', posts=posts)
 
-@app.route('/', methods=['POST'])
-def my_form_post():
-
-    text = request.form['text']
-    post = Posts(text=text)
     db.session.add(post)
+
+    user.pending = counter
     db.session.commit()
-    return redirect(url_for('displayposts'))
+    return redirect(url_for('userHome'))
 
 
 @app.route('/logout')
@@ -123,7 +171,7 @@ def oauth_callback(provider):
         user = User(social_id=social_id, nickname=username, email=email)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('firstTime'))
+        return redirect(url_for('showFirstTime'))
     login_user(user, True)
     return redirect(url_for('userHome'))
 
@@ -191,5 +239,4 @@ def haversine(lon1, lat1, lon2, lat2):
     
 
 if __name__ == '__main__':
-    db.create_all()
     app.run(debug=True)
