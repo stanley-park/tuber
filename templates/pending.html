@@ -49,9 +49,9 @@
         </div>
     
         <div class="jumbotron">
-
-            <h3>Requests for: </h3>
-            {%for post in posts%}
+            {% if current_user.available %}
+                <h3>Requests for: </h3>
+                {%for post in posts%}
                 {% if current_user.id ==  post.id_of_recipient %}
                 <div class="well">
                     <div class="row">
@@ -71,8 +71,10 @@
 
                 {% endif %}
             {% endfor %}
+            {% else %}
+                <h4> Your availability is currently set to off. Turn it on to see tutoring requests. </h4>
+            {% endif %}            
             
- 
         </div>
  
  
