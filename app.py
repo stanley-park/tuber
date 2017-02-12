@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-
+#!flask/bin/python
 
 from flask import Flask, redirect, url_for, render_template, flash, request
 from flask_sqlalchemy import SQLAlchemy
