@@ -18,7 +18,7 @@ from math import radians, cos, sin, asin, sqrt
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '24242424'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['OAUTH_CREDENTIALS'] = {
     'facebook': {
         'id': '408792279458709',
