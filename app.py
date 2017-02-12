@@ -19,7 +19,7 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '24242424'
-if os.environ['DATABASE_URL']:
+if os.environ.has_key("DATABASE_URL"):
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
