@@ -44,12 +44,15 @@ class User(UserMixin, db.Model):
     pending = db.Column(db.Integer, nullable=False, default=0)
     lat = db.Column(db.FLOAT, nullable=True)
     lon = db.Column(db.FLOAT, nullable=True)
+    accepted = db.Column(db.Integer, nullable=False, default=0)
+    accepted_email = db.Column(db.String(64))
 
 
 class Posts(UserMixin, db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     id_of_recipient = db.Column(db.Integer, nullable=False)
+    id_of_sender = db.Column(db.Integer, nullable=False)
 
 db.create_all()
 db.session.commit()
@@ -144,7 +147,7 @@ def contact(id):
 
     counter = 1
 
-    post = Posts(id_of_recipient = id)
+    post = Posts(id_of_recipient = id, id_of_sender=current_user.id)
 
     posts = Posts.query.all()
     for indPost in posts:
@@ -158,6 +161,16 @@ def contact(id):
     user.pending = counter
     db.session.commit()
     return redirect(url_for('userHome'))
+
+@app.route('/accept/<id>')
+def accept(id):
+    user = load_user(id)
+
+    current_user.accepted = id
+    current_user.accepted_email = user.email
+    db.session.commit()
+
+    return redirect(url_for('deactivateTutor'))
 
 
 @app.route('/logout')
