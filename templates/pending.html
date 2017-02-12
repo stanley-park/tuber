@@ -49,9 +49,9 @@
         </div>
     
         <div class="jumbotron">
-<<<<<<< HEAD
-            <h3>Requests for: </h3>
-            {%for post in posts%}
+            {% if current_user.available %}
+                <h3>Requests for: </h3>
+                {%for post in posts%}
                 {% if current_user.id ==  post.id_of_recipient %}
                 <div class="well">
                     <div class="row">
@@ -70,26 +70,11 @@
                   </div>        
 
                 {% endif %}
-=======
-            {% if current_user.available %}
-                <h3>Requests for: </h3>
-                {%for post in posts%}
-
-                {% if current_user.id ==  post.id_of_recipient %}
-                
-                    <h4>Course ID: {{ post.id_of_recipient }}</h4>
-                    <h4>Course description: {{ current_user.id }}</h4>
-                    <a href="#"> Accept </a>
-
-                {% endif %}
-                
-                {% endfor %}
+            {% endfor %}
             {% else %}
                 <h4> Your availability is currently set to off. Turn it on to see tutoring requests. </h4>
-            {% endif %}
->>>>>>> origin/master
+            {% endif %}            
             
- 
         </div>
  
  
