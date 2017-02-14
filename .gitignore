@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -116,6 +115,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 flask/
+flask/bin/
 
 
 # Elastic Beanstalk Files
@@ -167,4 +167,3 @@ flask-aws/pip-selfcheck.json
 =======
 flask/
 *.pyc
->>>>>>> master
