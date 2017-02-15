@@ -9,20 +9,42 @@
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link href="../static/css/signup.css" rel="stylesheet">
     <script src="../static/js/jquery-1.11.2.js"></script>
+
+    <script>
+    function loggedIn() {
+        window.location.assign("/userHome")
+    }
+    </script>
     
   </head>
  
   <body>
  
+    {% if current_user.is_authenticated %}
+        <script>
+            loggedIn();
+        </script>
+    {% endif %}
+
     <div class="container">
       <div class="header">
         <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" ><a href="/">Home</a></li>
-            <li role="presentation" ><a href="/signin.html">My Account</a></li>
-            <li role="presentation"><a href="/map">Map</a>
-            <li role="presentation" ><a href="/signin.html">Tutor Requests</a></li>
-            <li role="presentation" class="active"><a href="#">Log In</a></li>
+                    
+                    {% if current_user.is_authenticated %} 
+                        <li role="presentation"><a href="/userHome">My Account</a>
+                        <li role="presentation"><a href="/map">Map</a>
+                        {% if current_user.available %}
+                            <li role="presentation"><a href="/pending">Tutor Requests <span class="badge">{{ current_user.pending }}</a></li>
+                        {% else %}
+                            <li role="presentation"><a href="/pending">Tutor Requests</a></li>
+                        {% endif %}
+                        <li role="presentation" class="active"><a href="/logout">Log out</a></li>
+                    {% else %}
+                        <li role="presentation" class="active"><a href="#">Log In</a></li>
+                    {% endif %}
+
           </ul>
         </nav>
         <h3 class="text-muted"><a href="/">Tuber</a></h3>

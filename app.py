@@ -6,8 +6,8 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user,\
     current_user
 from oauth import OAuthSignIn
 
-from flask_googlemaps import GoogleMaps
-from flask_googlemaps import Map
+#from flask_googlemaps import GoogleMaps
+#from flask_googlemaps import Map
 import requests
 import json
 from decimal import Decimal
@@ -25,8 +25,8 @@ app.config['OAUTH_CREDENTIALS'] = {
         'secret': '046aa45aec64338848b150b4713f2b04'
     }
 }
-app.config['GOOGLEMAPS_KEY'] = "AIzaSyCZUODD2xlOWl6lb14VwG24F3n8lh2gRoI"
-GoogleMaps(app)
+#app.config['GOOGLEMAPS_KEY'] = "AIzaSyCZUODD2xlOWl6lb14VwG24F3n8lh2gRoI"
+#GoogleMaps(app)
 
 db = SQLAlchemy(app)
 lm = LoginManager(app)
