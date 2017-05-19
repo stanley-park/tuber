@@ -17,14 +17,8 @@ from math import radians, cos, sin, asin, sqrt
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '24242424'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-app.config['OAUTH_CREDENTIALS'] = {
-    'facebook': {
-        'id': '408792279458709',
-        'secret': '046aa45aec64338848b150b4713f2b04'
-    }
-}
+
 #app.config['GOOGLEMAPS_KEY'] = "AIzaSyCZUODD2xlOWl6lb14VwG24F3n8lh2gRoI"
 #GoogleMaps(app)
 
