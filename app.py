@@ -19,8 +19,6 @@ from math import radians, cos, sin, asin, sqrt
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
-#app.config['GOOGLEMAPS_KEY'] = "AIzaSyCZUODD2xlOWl6lb14VwG24F3n8lh2gRoI"
-#GoogleMaps(app)
 
 db = SQLAlchemy(app)
 lm = LoginManager(app)
